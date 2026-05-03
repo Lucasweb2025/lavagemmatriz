@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório Operacional - L.A CUSTOM</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            padding: 20px;
+            padding-bottom: 70px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Sistema de Abas Premium */
+        .tab-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .tab-btn {
+            background: #111;
+            border: 1px solid #333;
+            color: #888;
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active {
+            background: #d5001c;
+            color: #fff;
+            border-color: #d5001c;
+            box-shadow: 0 0 15px rgba(213, 0, 28, 0.4);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Cabeçalho */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px 0;
+            border-bottom: 2px solid #d5001c;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .header h1 span { color: #d5001c; }
+        .header p { color: #ffd700; font-size: 14px; font-weight: bold; text-transform: uppercase; }
+
+        /* Estilos de Cards e KPIs */
+        .analise-textual {
+            background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid #333;
+        }
+
+        .analise-textual h2 { font-size: 18px; color: #d5001c; margin-bottom: 15px; text-transform: uppercase; }
+        .analise-textual p { color: #e5e5e5; font-size: 15px; line-height: 1.6; margin-bottom: 10px; }
+        .destaque-verde { color: #00ff88; font-weight: 900; }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .kpi-card {
+            background: #111;
+            border-radius: 15px;
+            padding: 25px 15px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+
+        .kpi-card h3 { font-size: 11px; color: #aaa; text-transform: uppercase; margin-bottom: 10px; }
+        .kpi-card .value { font-size: 42px; font-weight: 900; }
+
+        .total .value { color: #0070ff; }
+        .semana .value { color: #00ff88; }
+        .passada .value { color: #ffd700; }
+
+        .trend-badge {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: bold;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        .chart-box {
+            background: #111;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid #222;
+        }
+
+        .chart-box h2 { font-size: 16px; text-align: center; margin-bottom: 25px; text-transform: uppercase; }
+        .canvas-container { position: relative; height: 300px; }
+
+        .footer { text-align: center; margin-top: 50px; padding-top: 30px; border-top: 1px solid #222; font-size: 11px; color: #555; letter-spacing: 3px; }
+        .footer span { color: #d5001c; }
+
+        @media (max-width: 600px) {
+            .kpi-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- Navegação -->
+        <div class="tab-nav">
+            <button class="tab-btn active" onclick="openTab('matriz')">Unidade Matriz</button>
+            <button class="tab-btn" onclick="openTab('factory')">Unidade Factory</button>
+        </div>
+
+        <!-- ABA 1: MATRIZ -->
+        <div id="matriz" class="tab-content active">
+            <div class="header">
+                <h1>L.A CUSTOM <span>|</span> MATRIZ</h1>
+                <p>Relatório Semanal: 27.04 a 03.05.2026</p>
+            </div>
+
+            <div class="analise-textual">
+                <h2>Sumário de Operações</h2>
+                <p>Relatório consolidado da unidade Matriz (Stuttgart). O período total registrou um fluxo acumulado de <strong>367 veículos</strong>.</p>
+                <p>A semana atual encerrou com <strong>73 veículos</strong>, mantendo uma excelente estabilidade operacional com variação de apenas <span class="destaque-verde">-2,7%</span> em relação à semana anterior.</p>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card total">
+                    <h3>Total Geral Acumulado</h3>
+                    <div class="value">367</div>
+                </div>
+                <div class="kpi-card semana">
+                    <h3>Semana Atual</h3>
+                    <div class="value">73</div>
+                    <div class="trend-badge">↓ 2,7% ESTABILIDADE</div>
+                </div>
+                <div class="kpi-card passada">
+                    <h3>Semana Anterior</h3>
+                    <div class="value">75</div>
+                </div>
+            </div>
+
+            <div class="chart-box">
+                <h2>Volume por Consultor (Ranking Geral)</h2>
+                <div class="canvas-container">
+                    <canvas id="chartConsultorMatriz"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-box">
+                <h2>Modelos Porsche Atendidos</h2>
+                <div class="canvas-container">
+                    <canvas id="chartVeiculoMatriz"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABA 2: FACTORY -->
+        <div id="factory" class="tab-content">
+            <div class="header">
+                <h1>L.A CUSTOM <span>|</span> FACTORY</h1>
+                <p>Relatório de Estética e Customização: 22.04 a 30.04.2026</p>
+            </div>
+
+            <div class="analise-textual">
+                <h2>Performance Factory</h2>
+                <p>A unidade Factory registrou <strong>66 veículos</strong> no período, com foco em serviços de alta complexidade e proteção.</p>
+                <p>Destaque para o volume de aplicações de <strong>PPF e Lavagens Especializadas</strong>, com 100% de eficiência na entrega ("Pronto").</p>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card total">
+                    <h3>Total de Veículos</h3>
+                    <div class="value">66</div>
+                </div>
+                <div class="kpi-card semana">
+                    <h3>Serviços Realizados</h3>
+                    <div class="value">79</div>
+                    <div class="trend-badge">↑ ALTA COMPLEXIDADE</div>
+                </div>
+                <div class="kpi-card passada">
+                    <h3>Aplicações PPF</h3>
+                    <div class="value">18</div>
+                </div>
+            </div>
+
+            <div class="chart-box">
+                <h2>Autorização por Responsável</h2>
+                <div class="canvas-container">
+                    <canvas id="chartResponsavelFactory"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-box">
+                <h2>Distribuição de Serviços Realizados</h2>
+                <div class="canvas-container">
+                    <canvas id="chartServicosFactory"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            DESENVOLVIDO POR: <span>LUCASWEB</span>
+        </div>
+    </div>
+
+    <script>
+        // Lógica de Alternância de Abas
+        function openTab(tabName) {
+            const contents = document.getElementsByClassName('tab-content');
+            const buttons = document.getElementsByClassName('tab-btn');
+            
+            for (let content of contents) content.classList.remove('active');
+            for (let btn of buttons) btn.classList.remove('active');
+            
+            document.getElementById(tabName).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        Chart.defaults.color = '#ffffff';
+
+        // --- GRÁFICOS MATRIZ ---
+        new Chart(document.getElementById('chartConsultorMatriz'), {
+            type: 'bar',
+            data: {
+                labels: ['Gabriel', 'Nelson', 'Alexandre', 'Rafael', 'Maju'],
+                datasets: [{
+                    data: [97, 90, 70, 59, 2],
+                    backgroundColor: ['#d5001c', '#0070ff', '#ffd700', '#00ff88', '#8a2be2'],
+                    borderRadius: 8
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        });
+
+        new Chart(document.getElementById('chartVeiculoMatriz'), {
+            type: 'bar',
+            data: {
+                labels: ['Cayenne', '911', 'Macan', 'Panamera', 'Boxster', 'Cayman'],
+                datasets: [{
+                    data: [109, 85, 81, 20, 17, 16],
+                    backgroundColor: '#d5001c',
+                    borderRadius: 5
+                }]
+            },
+            options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        });
+
+        // --- GRÁFICOS FACTORY ---
+        new Chart(document.getElementById('chartResponsavelFactory'), {
+            type: 'bar',
+            data: {
+                labels: ['Thiago Paixão', 'Patrick', 'Alef'],
+                datasets: [{
+                    data: [41, 17, 7],
+                    backgroundColor: ['#d5001c', '#0070ff', '#ffd700'],
+                    borderRadius: 8
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        });
+
+        new Chart(document.getElementById('chartServicosFactory'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Lavagem Esp.', 'PPF', 'BSS', 'Polimento', 'Coating'],
+                datasets: [{
+                    data: [47, 18, 6, 6, 2],
+                    backgroundColor: ['#d5001c', '#ffd700', '#0070ff', '#00ff88', '#ffffff'],
+                    borderWidth: 0
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+        });
+    </script>
+</body>
+</html>
