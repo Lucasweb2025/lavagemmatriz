@@ -3,51 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relatório Operacional - L.A CUSTOM</title>
+    <title>L.A CUSTOM | Executive Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; }
-        body { background-color: #000000; color: #ffffff; padding: 20px; padding-bottom: 70px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background-color: #000000; color: #ffffff; padding: 20px; padding-bottom: 70px; min-height: 100vh;}
         .container { max-width: 900px; margin: 0 auto; }
         
         .tab-nav { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
-        .tab-btn { background: #111; border: 1px solid #333; color: #888; padding: 12px 25px; cursor: pointer; border-radius: 8px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
-        .tab-btn.active { background: #d5001c; color: #fff; border-color: #d5001c; box-shadow: 0 0 15px rgba(213, 0, 28, 0.4); }
+        .tab-btn { background: #111; border: 1px solid #333; color: #888; padding: 12px 25px; cursor: pointer; border-radius: 8px; font-weight: bold; text-transform: uppercase; transition: 0.3s; }
+        .tab-btn.active { background: #d5001c; color: #fff; border-color: #d5001c; box-shadow: 0 0 15px rgba(213, 0, 28, 0.5); transform: scale(1.02); }
         
         .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        .tab-content.active { display: block; animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .header { text-align: center; margin-bottom: 40px; padding: 20px 0; border-bottom: 2px solid #d5001c; }
+        .header { text-align: center; margin-bottom: 30px; padding: 20px 0; border-bottom: 2px solid #d5001c; }
         .header h1 { font-size: 28px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; }
-        .header h1 span { color: #d5001c; }
+        .header h1 span { color: #d5001c; text-shadow: 0 0 10px rgba(213, 0, 28, 0.8); }
         .header p { color: #ffd700; font-size: 14px; font-weight: bold; text-transform: uppercase; }
 
-        .analise-textual { background: linear-gradient(145deg, #1a1a1a, #0a0a0a); border-radius: 15px; padding: 25px; margin-bottom: 30px; border: 1px solid #333; }
+        .total-topo { text-align: center; margin-bottom: 30px; background: rgba(255,255,255,0.02); padding: 25px; border-radius: 20px; border: 1px solid #222; }
+        .total-topo h3 { font-size: 12px; color: #aaa; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+        .total-topo .value { font-size: 82px; font-weight: 900; color: #0070ff; text-shadow: 0 0 25px rgba(0, 112, 255, 0.6); line-height: 1; }
+
+        .hero-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
+        .gauge-box { background: #111; border-radius: 20px; padding: 20px; border: 1px solid #333; text-align: center; height: 320px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; box-shadow: inset 0 0 20px rgba(213, 0, 28, 0.1); }
+        .projection-center { text-align: center !important; align-items: center !important; }
+        
+        .gauge-container { width: 250px; height: 180px; position: relative; margin-bottom: -40px; }
+        .gauge-value { font-size: 52px; font-weight: 900; margin-top: -20px; color: #fff; text-shadow: 0 0 15px rgba(213, 0, 28, 0.8); }
+
+        /* PISTA E CARRINHO - AJUSTE DEFINITIVO DE ESPAÇO */
+        .car-track-container { 
+            background: linear-gradient(180deg, #111, #0a0a0a); 
+            border-radius: 20px; 
+            padding: 110px 40px 40px 40px; /* Aumentado padding superior para 110px */
+            margin-bottom: 30px; 
+            position: relative; 
+            overflow: visible; /* Permitir que elementos brilhem sem cortar */
+            box-shadow: 0 0 30px rgba(213, 0, 28, 0.2); 
+        }
+        .track-line { height: 14px; background: #222; border-radius: 10px; width: 100%; position: relative; margin: 20px 0; border: 1px solid #444; }
+        .track-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #800000, #d5001c); border-radius: 10px; transition: width 5s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 25px #d5001c; }
+        .car-icon { position: absolute; left: 0%; top: -38px; font-size: 50px; transition: left 5s cubic-bezier(0.4, 0, 0.2, 1); transform: translateX(-50%) scaleX(-1); filter: drop-shadow(0 0 12px rgba(213,0,28,0.9)); }
+        
+        /* BANDEIRA POSICIONADA NO TOPO DO CARD SEM CORTAR */
+        .finish-flag { position: absolute; right: 40px; top: 25px; text-align: center; }
+        .flag-emoji { font-size: 45px; display: block; animation: wave 1s infinite alternate; margin-bottom: 5px; }
+        .flag-text { background: #ffd700; color: #000; font-size: 16px; font-weight: 900; padding: 6px 15px; border-radius: 6px; text-transform: uppercase; white-space: nowrap; box-shadow: 0 0 15px #ffd700; }
+
+        @keyframes wave { from { transform: rotate(-8deg); } to { transform: rotate(8deg); } }
+
+        .analise-textual { background: #111; border-radius: 15px; padding: 25px; margin-bottom: 30px; border: 1px solid #333; }
         .analise-textual h2 { font-size: 18px; color: #d5001c; margin-bottom: 15px; text-transform: uppercase; }
         .analise-textual p { color: #e5e5e5; font-size: 15px; line-height: 1.6; margin-bottom: 10px; }
-        .destaque-verde { color: #00ff88; font-weight: 900; }
+        .bold-green { color: #00ff88; font-weight: 900; }
 
         .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
         .kpi-card { background: #111; border-radius: 15px; padding: 25px 15px; text-align: center; border: 1px solid #333; }
         .kpi-card h3 { font-size: 11px; color: #aaa; text-transform: uppercase; margin-bottom: 10px; }
         .kpi-card .value { font-size: 42px; font-weight: 900; }
-        .total .value { color: #0070ff; }
-        .semana .value { color: #00ff88; }
-        .passada .value { color: #ffd700; }
-
-        .trend-badge { background: rgba(0, 255, 136, 0.2); color: #00ff88; padding: 5px 12px; border-radius: 50px; font-size: 13px; font-weight: bold; margin-top: 10px; display: inline-block; }
 
         .chart-box { background: #111; border-radius: 20px; padding: 25px; margin-bottom: 30px; border: 1px solid #222; }
-        .chart-box h2 { font-size: 16px; text-align: center; margin-bottom: 25px; text-transform: uppercase; }
-        .canvas-container { position: relative; height: 300px; }
+        .chart-box h2 { font-size: 16px; text-align: center; margin-bottom: 25px; text-transform: uppercase; color: #888; }
+        .canvas-container { position: relative; height: 320px; width: 100%; }
 
-        .footer { text-align: center; margin-top: 50px; padding-top: 30px; border-top: 1px solid #222; font-size: 11px; color: #555; letter-spacing: 3px; }
+        .footer { text-align: center; margin-top: 50px; color: #444; font-size: 11px; letter-spacing: 2px; }
         .footer span { color: #d5001c; }
     </style>
 </head>
 <body>
 
     <div class="container">
+        
         <div class="tab-nav">
             <button class="tab-btn active" onclick="openTab(event, 'grupo')">Grupo L.A</button>
             <button class="tab-btn" onclick="openTab(event, 'matriz')">Unidade Matriz</button>
@@ -56,67 +85,82 @@
 
         <div id="grupo" class="tab-content active">
             <div class="header">
-                <h1>L.A CUSTOM <span>|</span> GRUPO</h1>
-                <p>Consolidado Mensal: Março a Maio 2026</p>
+                <h1>GRUPO L.A CUSTOM <span>|</span> CONSOLIDADO</h1>
+                <p>Status da Operação Abril e Maio 2026</p>
             </div>
-            <div class="analise-textual">
-                <h2>Crescimento do Grupo</h2>
-                <p>O volume acumulado do grupo atingiu <strong>577 veículos</strong>. O gráfico de evolução demonstra uma tendência de alta constante na produtividade mensal.</p>
+
+            <div class="total-topo">
+                <h3>Total de Veículos Lavados (Grupo)</h3>
+                <div class="value">577</div>
             </div>
-            <div class="kpi-grid">
-                <div class="kpi-card total"><h3>Total Grupo</h3><div class="value">577</div></div>
-                <div class="kpi-card passada" style="border-color: #d5001c;"><div class="value" style="color: #d5001c;">463</div><h3>Fluxo Matriz</h3></div>
-                <div class="kpi-card passada" style="border-color: #ffd700;"><div class="value" style="color: #ffd700;">114</div><h3>Fluxo Factory</h3></div>
+
+            <div class="hero-layout">
+                <div class="gauge-box">
+                    <p style="font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 10px;">Performance da Meta 1.000</p>
+                    <div class="gauge-container"><canvas id="gaugeChart"></canvas></div>
+                    <div class="gauge-value" id="gaugeVal">0%</div>
+                </div>
+
+                <div class="gauge-box projection-center">
+                    <h2 style="color: #d5001c; font-size: 18px; margin-bottom: 15px; text-transform: uppercase;">PROJEÇÃO DE META</h2>
+                    <p style="font-size: 14px; color: #aaa; margin-bottom: 5px;">Ritmo Semanal:</p>
+                    <p style="font-size: 22px; font-weight: bold; margin-bottom: 20px;">139 veículos/semana</p>
+                    <p style="font-size: 14px; color: #ffd700; margin-bottom: 5px;">Previsão para Meta:</p>
+                    <p style="font-size: 36px; font-weight: 900; text-shadow: 0 0 10px rgba(255,255,255,0.2);">~ 21 DIAS</p>
+                </div>
             </div>
+
+            <div class="car-track-container">
+                <div class="finish-flag">
+                    <span class="flag-emoji">🏁</span>
+                    <span class="flag-text">CHEGADA A 1.000 VEÍCULOS</span>
+                </div>
+                <div class="track-line">
+                    <div class="track-fill" id="trackFill"></div>
+                    <div class="car-icon" id="carIcon">🏎️</div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 12px; color: #888; font-weight: bold;">
+                    <span>START (0)</span>
+                    <span style="color: #fff;">STATUS ATUAL: 577 VEÍCULOS (57.7%)</span>
+                    <span>META (1.000)</span>
+                </div>
+            </div>
+
             <div class="chart-box">
-                <h2>Evolução Mensal do Grupo (Volume Total)</h2>
-                <div class="canvas-container"><canvas id="chartCrescimentoMensal"></canvas></div>
-            </div>
-            <div class="chart-box">
-                <h2>Participação por Unidade (%)</h2>
-                <div class="canvas-container"><canvas id="chartParticipacaoGrupo"></canvas></div>
+                <h2>Modelos Porsche Atendidos (Grupo)</h2>
+                <div class="canvas-container"><canvas id="chartVeiculoGrupo"></canvas></div>
             </div>
         </div>
 
         <div id="matriz" class="tab-content">
-            <div class="header">
-                <h1>L.A CUSTOM <span>|</span> MATRIZ</h1>
-                <p>Relatório Semanal: 04.05 a 10.05.2026</p>
-            </div>
+            <div class="header"><h1>L.A CUSTOM <span>|</span> MATRIZ</h1><p>Relatório Semanal: 04.05 a 10.05.2026</p></div>
             <div class="analise-textual">
                 <h2>Sumário de Operações</h2>
-                <p>Relatório consolidado da unidade Matriz (Stuttgart). O período total registrou um fluxo acumulado de <strong>463 veículos</strong>.</p>
-                <p>A semana atual encerrou com <strong>96 veículos</strong>, apresentando um crescimento de produtividade de <span class="destaque-verde">+31,5%</span>.</p>
+                <p>Relatório consolidado da unidade Matriz (Stuttgart). O período total registrou um fluxo acumulado de <strong>463 veículos</strong>. A semana atual encerrou com <strong>96 veículos</strong> lavados, apresentando um crescimento de produtividade de <span class="bold-green">+31,5%</span> em relação à semana anterior.</p>
             </div>
             <div class="kpi-grid">
-                <div class="kpi-card total"><h3>Total Geral Acumulado</h3><div class="value">463</div></div>
-                <div class="kpi-card semana"><h3>Semana Atual</h3><div class="value">96</div><div class="trend-badge">↑ 31,5% CRESCIMENTO</div></div>
-                <div class="kpi-card passada"><h3>Semana Anterior</h3><div class="value">73</div></div>
+                <div class="kpi-card"><div class="value" style="color: #0070ff;">463</div><h3>Total Acumulado</h3></div>
+                <div class="kpi-card"><div class="value" style="color: #00ff88;">96</div><h3>Semana Atual</h3></div>
+                <div class="kpi-card"><div class="value" style="color: #ffd700;">73</div><h3>Semana Anterior</h3></div>
             </div>
             <div class="chart-box"><h2>Volume por Consultor (Ranking Geral)</h2><div class="canvas-container"><canvas id="chartConsultorMatriz"></canvas></div></div>
-            <div class="chart-box"><h2>Modelos Porsche Atendidos</h2><div class="canvas-container"><canvas id="chartVeiculoMatriz"></canvas></div></div>
         </div>
 
         <div id="factory" class="tab-content">
-            <div class="header">
-                <h1>L.A CUSTOM <span>|</span> FACTORY</h1>
-                <p>Relatório de Estética e Customização: 22.04 a 09.05.2026</p>
-            </div>
+            <div class="header"><h1>L.A CUSTOM <span>|</span> FACTORY</h1><p>Relatório Semanal: 04.05 a 10.05.2026</p></div>
             <div class="analise-textual">
                 <h2>Performance Factory</h2>
-                <p>A unidade registrou <strong>114 veículos</strong> no período acumulado. O fluxo semanal atingiu <strong>43 lavagens</strong>.</p>
-                <p>Operação com uma média produtiva de <strong>6.3 veículos por dia</strong>.</p>
+                <p>A unidade registrou <strong>114 veículos</strong> no período acumulado, mantendo foco total em qualidade de entrega. O fluxo semanal atingiu <strong>43 lavagens</strong>, operando com uma média de <strong>6.3 carros por dia</strong>.</p>
             </div>
             <div class="kpi-grid">
-                <div class="kpi-card total"><h3>Total de Veículos</h3><div class="value">114</div></div>
-                <div class="kpi-card semana"><h3>Lavados na Semana</h3><div class="value">43</div><div class="trend-badge">↑ FLUXO ATIVO</div></div>
-                <div class="kpi-card passada"><h3>Média Diária</h3><div class="value">6.3</div></div>
+                <div class="kpi-card"><div class="value" style="color: #0070ff;">114</div><h3>Total de Veículos</h3></div>
+                <div class="kpi-card"><div class="value" style="color: #00ff88;">43</div><h3>Lavados na Semana</h3></div>
+                <div class="kpi-card"><div class="value" style="color: #ffd700;">6.3</div><h3>Média Diária</h3></div>
             </div>
-            <div class="chart-box"><h2>Autorização por Responsável</h2><div class="canvas-container"><canvas id="chartResponsavelFactory"></canvas></div></div>
-            <div class="chart-box"><h2>Distribuição de Serviços Realizados</h2><div class="canvas-container"><canvas id="chartServicosFactory"></canvas></div></div>
+            <div class="chart-box"><h2>Distribuição de Serviços</h2><div class="canvas-container"><canvas id="chartServicosFactory"></canvas></div></div>
         </div>
 
-        <div class="footer">DESENVOLVIDO POR: <span>LUCASWEB</span></div>
+        <div class="footer">DEVELOPED BY: <span>LUCASWEB</span> | 2026</div>
     </div>
 
     <script>
@@ -127,72 +171,68 @@
             for (let i = 0; i < buttons.length; i++) buttons[i].classList.remove('active');
             document.getElementById(tabName).classList.add('active');
             evt.currentTarget.classList.add('active');
+            if(tabName === 'grupo') runAnimations();
+        }
+
+        function runAnimations() {
+            const percent = 57.7;
+            const fill = document.getElementById('trackFill');
+            const car = document.getElementById('carIcon');
+            const val = document.getElementById('gaugeVal');
+            
+            fill.style.width = '0%'; car.style.left = '0%';
+            
+            setTimeout(() => { 
+                fill.style.width = percent + '%'; 
+                car.style.left = percent + '%'; 
+            }, 100);
+
+            let start = 0;
+            const timer = setInterval(() => {
+                if(start >= percent) { 
+                    val.innerText = percent.toFixed(1) + '%'; 
+                    clearInterval(timer); 
+                }
+                else { 
+                    start += 0.3; 
+                    val.innerText = start.toFixed(1) + '%'; 
+                }
+            }, 25);
         }
 
         Chart.defaults.color = '#ffffff';
 
         window.onload = function() {
-            // GRÁFICOS GRUPO
-            new Chart(document.getElementById('chartCrescimentoMensal'), {
-                type: 'line',
-                data: {
-                    labels: ['Março', 'Abril', 'Maio (Atual)'],
-                    datasets: [{
-                        label: 'Volume Grupo',
-                        data: [320, 480, 577],
-                        borderColor: '#d5001c',
-                        backgroundColor: 'rgba(213, 0, 28, 0.2)',
-                        fill: true,
-                        tension: 0.4,
-                        pointRadius: 6,
-                        pointBackgroundColor: '#d5001c'
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false }
+            runAnimations();
+            new Chart(document.getElementById('gaugeChart'), {
+                type: 'doughnut',
+                data: { datasets: [{ data: [577, 423], backgroundColor: ['#d5001c', '#222'], borderWidth: 0, circumference: 180, rotation: 270 }] },
+                options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } }, animation: { duration: 5000 } }
             });
-
-            new Chart(document.getElementById('chartParticipacaoGrupo'), {
-                type: 'pie',
-                data: {
-                    labels: ['Unidade Matriz', 'Unidade Factory'],
-                    datasets: [{ data: [463, 114], backgroundColor: ['#d5001c', '#ffd700'], borderWidth: 0 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false }
-            });
-
-            // GRÁFICOS MATRIZ
-            new Chart(document.getElementById('chartConsultorMatriz'), {
-                type: 'bar',
-                data: {
-                    labels: ['Gabriel', 'Nelson', 'Alexandre', 'Rafael', 'Maju'],
-                    datasets: [{ data: [133, 117, 89, 59, 4], backgroundColor: '#d5001c', borderRadius: 8 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-            });
-
-            new Chart(document.getElementById('chartVeiculoMatriz'), {
+            new Chart(document.getElementById('chartVeiculoGrupo'), {
                 type: 'bar',
                 data: {
                     labels: ['Cayenne', '911', 'Macan', 'Panamera', 'Boxster', 'Cayman'],
                     datasets: [{ data: [150, 103, 111, 25, 20, 17], backgroundColor: '#d5001c', borderRadius: 5 }]
                 },
-                options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+                options: { 
+                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                    scales: { x: { ticks: { font: { size: 16, weight: 'bold' } } }, y: { ticks: { font: { size: 16, weight: 'bold' } } } },
+                    plugins: { legend: { display: false } }
+                }
             });
-
-            // GRÁFICOS FACTORY
-            new Chart(document.getElementById('chartResponsavelFactory'), {
+            new Chart(document.getElementById('chartConsultorMatriz'), {
                 type: 'bar',
                 data: {
-                    labels: ['Thiago Paixão', 'Patrick', 'Alef'],
-                    datasets: [{ data: [75, 26, 10], backgroundColor: '#ffd700', borderRadius: 8 }]
+                    labels: ['Gabriel (133)', 'Nelson (117)', 'Alexandre (89)', 'Rafael (59)', 'Maju (4)'],
+                    datasets: [{ data: [133, 117, 89, 59, 4], backgroundColor: '#d5001c', borderRadius: 8 }]
                 },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
             });
-
             new Chart(document.getElementById('chartServicosFactory'), {
                 type: 'doughnut',
                 data: {
-                    labels: ['Lavagem Esp.', 'PPF', 'BSS', 'Polimento', 'Coating'],
+                    labels: ['Lavagem', 'PPF', 'BSS', 'Polimento', 'Coating'],
                     datasets: [{ data: [80, 36, 8, 6, 4], backgroundColor: ['#d5001c', '#ffd700', '#0070ff', '#00ff88', '#fff'], borderWidth: 0 }]
                 },
                 options: { responsive: true, maintainAspectRatio: false }
