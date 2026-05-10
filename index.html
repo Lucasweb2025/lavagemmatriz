@@ -148,82 +148,79 @@
 
     <div class="container">
         
-        <!-- Navegação -->
         <div class="tab-nav">
             <button class="tab-btn active" onclick="openTab('matriz')">Unidade Matriz</button>
             <button class="tab-btn" onclick="openTab('factory')">Unidade Factory</button>
         </div>
 
-        <!-- ABA 1: MATRIZ -->
         <div id="matriz" class="tab-content active">
             <div class="header">
                 <h1>L.A CUSTOM <span>|</span> MATRIZ</h1>
-                <p>Relatório Semanal: 27.04 a 03.05.2026</p>
+                <p>Relatório Semanal: 04.05 a 10.05.2026</p>
             </div>
 
             <div class="analise-textual">
                 <h2>Sumário de Operações</h2>
-                <p>Relatório consolidado da unidade Matriz (Stuttgart). O período total registrou um fluxo acumulado de <strong>367 veículos</strong>.</p>
-                <p>A semana atual encerrou com <strong>73 veículos</strong>, mantendo uma excelente estabilidade operacional com variação de apenas <span class="destaque-verde">-2,7%</span> em relação à semana anterior.</p>
+                <p>Relatório consolidado da unidade Matriz (Stuttgart). O período total registrou um fluxo acumulado de <strong>463 veículos</strong>.</p>
+                <p>A semana atual encerrou com <strong>96 veículos</strong> lavados, apresentando um crescimento de produtividade de <span class="destaque-verde">+31,5%</span> em relação à semana anterior.</p>
             </div>
 
             <div class="kpi-grid">
                 <div class="kpi-card total">
                     <h3>Total Geral Acumulado</h3>
-                    <div class="value">367</div>
+                    <div class="value">463</div>
                 </div>
                 <div class="kpi-card semana">
                     <h3>Semana Atual</h3>
-                    <div class="value">73</div>
-                    <div class="trend-badge">↓ 2,7% ESTABILIDADE</div>
+                    <div class="value">96</div>
+                    <div class="trend-badge">↑ 31,5% CRESCIMENTO</div>
                 </div>
                 <div class="kpi-card passada">
                     <h3>Semana Anterior</h3>
-                    <div class="value">75</div>
+                    <div class="value">73</div>
                 </div>
             </div>
 
             <div class="chart-box">
-                <h2>Volume por Consultor (Ranking Geral)</h2>
+                <h2>Volume por Consultor (Acumulado)</h2>
                 <div class="canvas-container">
                     <canvas id="chartConsultorMatriz"></canvas>
                 </div>
             </div>
 
             <div class="chart-box">
-                <h2>Modelos Porsche Atendidos</h2>
+                <h2>Modelos Porsche Atendidos (Acumulado)</h2>
                 <div class="canvas-container">
                     <canvas id="chartVeiculoMatriz"></canvas>
                 </div>
             </div>
         </div>
 
-        <!-- ABA 2: FACTORY -->
         <div id="factory" class="tab-content">
             <div class="header">
                 <h1>L.A CUSTOM <span>|</span> FACTORY</h1>
-                <p>Relatório de Estética e Customização: 22.04 a 30.04.2026</p>
+                <p>Relatório de Estética e Customização: 22.04 a 09.05.2026</p>
             </div>
 
             <div class="analise-textual">
                 <h2>Performance Factory</h2>
-                <p>A unidade Factory registrou <strong>66 veículos</strong> no período, com foco em serviços de alta complexidade e proteção.</p>
-                <p>Destaque para o volume de aplicações de <strong>PPF e Lavagens Especializadas</strong>, com 100% de eficiência na entrega ("Pronto").</p>
+                <p>A unidade Factory registrou <strong>114 veículos</strong> no período acumulado, mantendo foco total em qualidade de entrega.</p>
+                <p>O fluxo semanal atingiu <strong>43 lavagens</strong>, operando com uma média de <strong>6.3 carros por dia</strong>.</p>
             </div>
 
             <div class="kpi-grid">
                 <div class="kpi-card total">
                     <h3>Total de Veículos</h3>
-                    <div class="value">66</div>
+                    <div class="value">114</div>
                 </div>
                 <div class="kpi-card semana">
-                    <h3>Serviços Realizados</h3>
-                    <div class="value">79</div>
-                    <div class="trend-badge">↑ ALTA COMPLEXIDADE</div>
+                    <h3>Lavados na Semana</h3>
+                    <div class="value">43</div>
+                    <div class="trend-badge">↑ FLUXO ATIVO</div>
                 </div>
                 <div class="kpi-card passada">
-                    <h3>Aplicações PPF</h3>
-                    <div class="value">18</div>
+                    <h3>Média Diária</h3>
+                    <div class="value">6.3</div>
                 </div>
             </div>
 
@@ -248,7 +245,6 @@
     </div>
 
     <script>
-        // Lógica de Alternância de Abas
         function openTab(tabName) {
             const contents = document.getElementsByClassName('tab-content');
             const buttons = document.getElementsByClassName('tab-btn');
@@ -262,13 +258,13 @@
 
         Chart.defaults.color = '#ffffff';
 
-        // --- GRÁFICOS MATRIZ ---
+        // --- GRÁFICOS MATRIZ (VALORES SOMADOS) ---
         new Chart(document.getElementById('chartConsultorMatriz'), {
             type: 'bar',
             data: {
                 labels: ['Gabriel', 'Nelson', 'Alexandre', 'Rafael', 'Maju'],
                 datasets: [{
-                    data: [97, 90, 70, 59, 2],
+                    data: [133, 117, 89, 59, 4],
                     backgroundColor: ['#d5001c', '#0070ff', '#ffd700', '#00ff88', '#8a2be2'],
                     borderRadius: 8
                 }]
@@ -281,7 +277,7 @@
             data: {
                 labels: ['Cayenne', '911', 'Macan', 'Panamera', 'Boxster', 'Cayman'],
                 datasets: [{
-                    data: [109, 85, 81, 20, 17, 16],
+                    data: [150, 103, 111, 25, 20, 17],
                     backgroundColor: '#d5001c',
                     borderRadius: 5
                 }]
@@ -295,7 +291,7 @@
             data: {
                 labels: ['Thiago Paixão', 'Patrick', 'Alef'],
                 datasets: [{
-                    data: [41, 17, 7],
+                    data: [75, 26, 10],
                     backgroundColor: ['#d5001c', '#0070ff', '#ffd700'],
                     borderRadius: 8
                 }]
@@ -308,7 +304,7 @@
             data: {
                 labels: ['Lavagem Esp.', 'PPF', 'BSS', 'Polimento', 'Coating'],
                 datasets: [{
-                    data: [47, 18, 6, 6, 2],
+                    data: [80, 36, 8, 6, 4],
                     backgroundColor: ['#d5001c', '#ffd700', '#0070ff', '#00ff88', '#ffffff'],
                     borderWidth: 0
                 }]
